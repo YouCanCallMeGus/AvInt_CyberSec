@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="popup.css">
+  <title>Detector de Privacidade</title>
+</head>
+<body>
+  <header class="head">
+    <div class="head-info">
+      <div class="site" id="site">carregando…</div>
+      <div class="sub" id="sub">analisando esta página</div>
+    </div>
+    <div class="gauge" id="gauge" role="img" aria-label="Score de privacidade">
+      <svg viewBox="0 0 72 72" width="72" height="72">
+        <circle cx="36" cy="36" r="30" class="ring-bg"></circle>
+        <circle cx="36" cy="36" r="30" class="ring-fg" id="ring"></circle>
+      </svg>
+      <div class="gauge-label">
+        <span class="grade" id="grade">–</span>
+        <span class="score" id="score">–</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="strip" id="strip">
+    <div class="stat"><span class="n" id="s-third">0</span><span class="k">3ª parte</span></div>
+    <div class="stat"><span class="n bad" id="s-track">0</span><span class="k">rastreadores</span></div>
+    <div class="stat"><span class="n" id="s-cookies">0</span><span class="k">cookies</span></div>
+    <div class="stat"><span class="n" id="s-storage">0</span><span class="k">storage</span></div>
+  </section>
+
+  <section class="flags" id="flags"></section>
+
+  <div class="controls">
+    <label class="switch">
+      <input type="checkbox" id="blockToggle">
+      <span>Bloquear rastreadores de 3ª parte</span>
+    </label>
+    <span class="blocked-count" id="blockedCount"></span>
+  </div>
+
+  <div class="accordion" id="accordion"></div>
+
+  <details class="blocklist">
+    <summary>Lista de bloqueio personalizada</summary>
+    <p class="hint">Um domínio por linha (ex.: <code>exemplo-tracker.com</code>). Vale para todas as páginas.</p>
+    <textarea id="customList" placeholder="dominio1.com&#10;dominio2.net"></textarea>
+    <button id="saveList">Salvar lista</button>
+    <span class="saved" id="savedMsg"></span>
+  </details>
+
+  <footer class="foot">
+    <button id="refresh">Recarregar leitura</button>
+    <span class="build">Detector de Privacidade · v1.0</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
