@@ -1,0 +1,12 @@
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Build/temporario
+*.zip
+*.xpi
+node_modules/
+
+# Evidencias grandes podem ficar fora do git se preferir (comente se for versionar)
+# evidencias/**/*.har
