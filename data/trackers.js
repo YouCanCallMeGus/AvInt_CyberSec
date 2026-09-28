@@ -31,3 +31,15 @@ var TRACKER_DOMAINS = new Set([
 function isKnownTracker(registrableDomain) {
   return TRACKER_DOMAINS.has(registrableDomain);
 }
+var SESSION_RECORDING_DOMAINS = new Set([
+  "hotjar.com", "hotjar.io", "fullstory.com", "fs.com", "mouseflow.com",
+  "clarity.ms", "logrocket.com", "logrocket.io", "smartlook.com",
+  "inspectlet.com", "luckyorange.com", "luckyorange.net", "sessioncam.com",
+  "contentsquare.net", "contentsquare.com", "quantummetric.com",
+  "decibelinsight.net", "glassboxdigital.io", "yandex.ru", "mc.yandex.ru",
+  "crazyegg.com", "hoverowl.com", "ptengine.com", "vwo.com"
+]);
+
+function isSessionRecorder(registrableDomain) {
+  return SESSION_RECORDING_DOMAINS.has(registrableDomain);
+}

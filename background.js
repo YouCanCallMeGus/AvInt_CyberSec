@@ -18,7 +18,7 @@ function blankReport(baseUrl) {
   return {
     baseUrl: baseUrl || null,
     baseDomain: baseDomain,
-    thirdParties: {},           
+    thirdParties: {},          
     firstPartyHosts: {},        
     cookies: {
       firstSession: 0, firstPersistent: 0,
@@ -57,6 +57,9 @@ browser.webRequest.onBeforeRequest.addListener(
       return {};
     }
 
+    const originUrl = details.originUrl || details.documentUrl || "";
+    if (!/^https?:\/\//.test(originUrl)) return {};
+
     const report = getTab(tabId);
     if (!report.baseDomain) {
       report.baseDomain = report.baseDomain || null;
@@ -76,6 +79,14 @@ browser.webRequest.onBeforeRequest.addListener(
       if (tp.sample.length < 3) tp.sample.push(details.url.slice(0, 200));
 
       collectIdParams(report, details.url, reqDomain);
+
+      if (isSessionRecorder(reqDomain)) {
+        const line = "Servico de session-recording/keylogging: " + reqDomain;
+        if (report.hijack.evidence.indexOf(line) === -1) {
+          report.hijack.detected = true;
+          report.hijack.evidence.push(line);
+        }
+      }
 
       report.thirdParties[reqDomain] = tp;
 
@@ -276,6 +287,7 @@ function mergeEvidence(report, msg, sender) {
 
   if (msg.hijack && msg.hijack.length) {
     msg.hijack.forEach((e) => {
+      if (e.kind === "listener") return;
       let line = e.text;
       if (e.domain) {
         const d = getRegistrableDomain(e.domain);
