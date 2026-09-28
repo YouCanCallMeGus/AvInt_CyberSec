@@ -31,8 +31,6 @@ Isso cobre os itens exigidos até o **Conceito A** da rubrica.
 3. Selecione o arquivo **`manifest.json`** na raiz desta pasta.
 4. O ícone de escudo aparece na barra de ferramentas. Navegue por uma página e clique no ícone para ver o relatório.
 
-> Extensão temporária é removida ao fechar o Firefox — basta recarregar. O *badge* vermelho sobre o ícone mostra o número de domínios de 3ª parte da aba atual.
-
 Para depurar o `background.js`: em `about:debugging`, clique em **Inspecionar** na extensão.
 
 ---
