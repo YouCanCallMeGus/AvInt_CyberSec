@@ -3,7 +3,7 @@ var TRACKER_DOMAINS = new Set([
   "googleadservices.com", "doubleclick.net", "google.com", "gstatic.com",
   "adservice.google.com", "2mdn.net", "app-measurement.com", "crashlytics.com",
   "facebook.com", "facebook.net", "fbcdn.net", "atdmt.com",
-  "amazon-adsystem.com", "assoc-amazon.com", "media-amazon.com",
+  "amazon-adsystem.com", "assoc-amazon.com",
   "bing.com", "clarity.ms", "licdn.com", "linkedin.com", "msn.com",
   "hotjar.com", "mixpanel.com", "segment.com", "segment.io", "amplitude.com",
   "fullstory.com", "mouseflow.com", "crazyegg.com", "quantserve.com",
