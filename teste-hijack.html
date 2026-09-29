@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Teste controlado — Hijack / Hook</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; line-height: 1.5; }
+    h1 { font-size: 1.4rem; }
+    .aviso { background: #fff3cd; border: 1px solid #ffe08a; padding: 12px 16px; border-radius: 8px; font-size: .95rem; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: .92rem; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f0f0f0; padding: 1px 5px; border-radius: 4px; }
+    #log { margin-top: 16px; font-family: ui-monospace, monospace; font-size: .85rem; color: #333; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <p><a href="javascript:history.back()">[Voltar]</a></p>
+  <h1>Teste controlado — indicadores de Hijack / Hook</h1>
+
+  <p class="aviso">
+    <strong>Página de teste (fixture).</strong> Não é um site real nem malicioso — ela apenas
+    dispara, de propósito, os comportamentos que o detector deve sinalizar, para validar o
+    indicador <em>Hijack/hook</em> num ambiente controlado (mesma lógica das páginas de teste do
+    DuckDuckGo). Abra o popup da extensão nesta aba e compare com os resultados esperados abaixo. Observação: após a calibração do detector, listeners genéricos de input/mouse deixaram de sinalizar hijack (para não dar falso positivo em qualquer caixa de busca); o indicador acende aqui pela adulteração de nativo e pelo objeto BeEF.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Comportamento disparado</th><th>Resultado esperado no plugin</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>3 listeners de <code>mousemove</code></td>
+        <td><strong>NÃO sinaliza</strong> (por design) — listener genérico é comum em qualquer página; evita falso positivo</td>
+      </tr>
+      <tr>
+        <td>3 listeners de <code>keydown</code></td>
+        <td><strong>NÃO sinaliza</strong> (por design) — idem; session-recording real é detectado por domínio de fornecedor (hotjar, clarity, fullstory...)</td>
+      </tr>
+      <tr>
+        <td><code>window.alert</code> sobrescrito</td>
+        <td>Hijack/hook aceso — “window.alert foi sobrescrito” (surge ~1,5s após o load)</td>
+      </tr>
+      <tr>
+        <td>Objeto global <code>window.beef</code> criado</td>
+        <td>Hijack/hook — “Objeto global BeEF detectado” (surge ~1,5s após o load)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="log"></div>
+
+  <script>
+    // ---- Fixture de teste: dispara os gatilhos do indicador Hijack/hook ----
+    var out = [];
+    function log(m) { out.push("• " + m); document.getElementById("log").textContent = out.join("\n"); }
+
+    // 1) Session recording: 3 listeners de mousemove
+    for (var i = 0; i < 3; i++) document.addEventListener("mousemove", function () {});
+    log("3 listeners de mousemove adicionados (session-recording)");
+
+    // 2) Key logging: 3 listeners de keydown
+    for (var j = 0; j < 3; j++) document.addEventListener("keydown", function () {});
+    log("3 listeners de keydown adicionados (key-logging)");
+
+    // 3) Adulteração de nativo: sobrescreve window.alert
+    window.alert = function () { /* stub de teste */ };
+    log("window.alert sobrescrito (adulteração de nativo)");
+
+    // 4) BeEF: cria o objeto global que o BeEF costuma expor
+    window.beef = { version: "teste-fixture" };
+    log("window.beef criado (simulação de hook BeEF)");
+
+    log("");
+    log("Pronto. Abra o popup da extensão — os itens 1 e 2 aparecem já; 3 e 4 surgem ~1,5s depois.");
+  </script>
+</body>
+</html>
