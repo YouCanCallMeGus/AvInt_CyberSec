@@ -1,8 +1,8 @@
-# Detector de Privacidade — extensão Firefox
+# CyberCheck — extensão Firefox
 
 Extensão para **Firefox** que detecta, na navegação do cliente web, os principais mecanismos de rastreamento e violação de privacidade, e atribui uma **pontuação de privacidade** por página segundo uma metodologia explícita.
 
-Trabalho da Avaliação Intermediária de Cibersegurança (Insper) — João Eduardo Luisi.
+Trabalho da Avaliação Intermediária de Cibersegurança (Insper) — Gustavo Santana Silva.
 
 ---
 
