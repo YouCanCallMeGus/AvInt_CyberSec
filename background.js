@@ -18,7 +18,7 @@ function blankReport(baseUrl) {
   return {
     baseUrl: baseUrl || null,
     baseDomain: baseDomain,
-    thirdParties: {},          
+    thirdParties: {},           
     firstPartyHosts: {},        
     cookies: {
       firstSession: 0, firstPersistent: 0,
@@ -57,8 +57,8 @@ browser.webRequest.onBeforeRequest.addListener(
       return {};
     }
 
-    const originUrl = details.originUrl || details.documentUrl || "";
-    if (!/^https?:\/\//.test(originUrl)) return {};
+    const docCtx = details.originUrl || details.documentUrl || "";
+    if (docCtx === "") return {};
 
     const report = getTab(tabId);
     if (!report.baseDomain) {
@@ -144,7 +144,6 @@ browser.webRequest.onBeforeRedirect.addListener(
       chain.push(toDomain);
       report._redirects[details.requestId] = chain;
 
-      // Bounce: a cadeia passa por um dominio != origem e != destino final.
       const origin = report.baseDomain;
       const intermediarios = chain.filter((d) => d && d !== origin && d !== toDomain);
       const terceiros = intermediarios.filter((d) => d !== origin);
@@ -199,7 +198,7 @@ function registerCookie(report, cookieStr, domain, party, source) {
     if (m) {
       const exp = new Date(m[1]);
       if (!isNaN(exp.getTime())) {
-        if (exp.getTime() <= Date.now()) return; // ja expirado => remocao
+        if (exp.getTime() <= Date.now()) return;
         persistent = true;
         ttlLabel = exp.toISOString().slice(0, 10);
       }
@@ -212,7 +211,6 @@ function registerCookie(report, cookieStr, domain, party, source) {
     if (persistent) report.cookies.thirdPersistent++; else report.cookies.thirdSession++;
   }
 
-  // Evita duplicar o mesmo cookie (name+domain) na lista
   const key = name + "@" + domain;
   if (!report.cookies.list.some((c) => c._key === key)) {
     report.cookies.list.push({
@@ -224,7 +222,6 @@ function registerCookie(report, cookieStr, domain, party, source) {
 }
 
 browser.runtime.onMessage.addListener((msg, sender) => {
-  // Evidencias vindas da pagina (content script)
   if (msg && msg.type === "pageEvidence") {
     const tabId = sender.tab ? sender.tab.id : -1;
     if (tabId < 0) return;
